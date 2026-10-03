@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "竖向标签管理器",
+  "description": "给 Chrome 标签添加备注，快速区分不同用户、项目和需求，并按分组管理。",
+  "version": "1.0.0",
+  "minimum_chrome_version": "114",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "sidePanel",
+    "bookmarks"
+  ],
+  "action": {
+    "default_title": "打开竖向标签管理器",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
