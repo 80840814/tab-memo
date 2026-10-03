@@ -10,15 +10,15 @@
 
 展开列表：
 
-![展开列表](docs/screenshots/expanded.png)
+![展开列表](docs/screenshots/expanded-v2.png)
 
 未分组标签多选建组：
 
-![多选建组](docs/screenshots/multi-select.png)
+![多选建组](docs/screenshots/multi-select-v2.png)
 
 分组展开状态同步：
 
-![分组同步](docs/screenshots/group-sync.png)
+![分组同步](docs/screenshots/group-sync-v2.png)
 
 ## 安装
 
