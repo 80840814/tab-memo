@@ -1,18 +1,23 @@
 {
   "manifest_version": 3,
   "name": "竖向标签管理器",
-  "description": "给 Chrome 标签添加备注，快速区分不同用户、项目和需求，并按分组管理。",
-  "version": "1.0.0",
+  "description": "给 Chrome 标签添加备注，快速区分不同用户、项目和需求，并按分组管理。支持 AI 网页翻译。",
+  "version": "1.1.0",
   "minimum_chrome_version": "114",
   "permissions": [
     "tabs",
     "tabGroups",
     "storage",
     "sidePanel",
-    "bookmarks"
+    "bookmarks",
+    "activeTab",
+    "scripting",
+    "contextMenus"
   ],
+  "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "打开竖向标签管理器",
+    "default_title": "打开竖向标签管理器 / 翻译当前页面",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -27,10 +32,22 @@
   "side_panel": {
     "default_path": "sidepanel.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  }
+  },
+  "options_page": "options.html"
 }

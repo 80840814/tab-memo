@@ -255,6 +255,17 @@ function showToast(message) { const toast = $('#toast'); toast.textContent = mes
 function setSaveStatus(message) { $('#saveStatus').textContent = message; window.clearTimeout(setSaveStatus.timer); setSaveStatus.timer = window.setTimeout(() => { $('#saveStatus').textContent = '备注自动保存'; }, 1800); }
 
 $('#refreshButton').addEventListener('click', loadData);
+$('#translateButton').addEventListener('click', async () => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab?.id) return showToast('找不到当前标签');
+  try {
+    const result = await chrome.runtime.sendMessage({ type: 'toggle-tab', tabId: tab.id });
+    showToast(result?.enabled ? '已开启整页翻译' : result?.error || '已关闭整页翻译');
+  } catch (error) {
+    showToast('此页面不支持注入翻译');
+  }
+});
+$('#settingsButton').addEventListener('click', () => chrome.runtime.openOptionsPage());
 $('#newGroupButton').addEventListener('click', createGroup);
 $('#expandAllButton').addEventListener('click', () => setAllGroupsCollapsed(false));
 $('#collapseAllButton').addEventListener('click', () => setAllGroupsCollapsed(true));

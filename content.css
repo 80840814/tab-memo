@@ -1,0 +1,141 @@
+/* 整页译文：与原文同字体同字号，纯文本展示在原文下一行（双语对照） */
+.dsh-tr {
+  display: block;
+  margin: 0.18em 0 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 1em;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  text-transform: none;
+  white-space: normal;
+  cursor: default;
+  opacity: 0.72;
+}
+/* 深色背景页面用透明度会太暗，改用略偏灰的浅色以保持可读 */
+@media (prefers-color-scheme: dark) {
+  .dsh-tr {
+    opacity: 0.88;
+  }
+}
+/* 行内元素（如时间）的译文接在同一行 */
+.dsh-tr.dsh-tr-inline {
+  display: inline;
+  margin: 0 0 0 0.6em;
+  vertical-align: baseline;
+}
+.dsh-tr.dsh-loading {
+  opacity: 0.4;
+}
+.dsh-tr.dsh-error {
+  opacity: 1;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+/* 划词翻译图标 */
+.dsh-sel-icon {
+  position: fixed;
+  z-index: 2147483647;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #4a90e2;
+  color: #fff;
+  font: 600 14px/28px system-ui, -apple-system, "PingFang SC", sans-serif;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.dsh-sel-icon:hover {
+  background: #357abd;
+}
+
+/* 划词翻译气泡 */
+.dsh-bubble {
+  position: fixed;
+  z-index: 2147483647;
+  width: 340px;
+  max-width: calc(100vw - 16px);
+  box-sizing: border-box;
+  background: #fff;
+  color: #222;
+  border: 1px solid #d8dde6;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  font: 14px/1.6 system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  text-align: left;
+}
+.dsh-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid #eef1f5;
+  color: #666;
+  font-size: 12px;
+}
+.dsh-bubble-close {
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.dsh-bubble-close:hover {
+  color: #333;
+}
+.dsh-bubble-body {
+  padding: 10px 12px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 320px;
+  overflow: auto;
+}
+.dsh-bubble-body.dsh-loading {
+  color: #999;
+}
+.dsh-bubble-body.dsh-error {
+  color: #c0392b;
+}
+
+/* 整页翻译右上角悬浮控制条 */
+.dsh-floating-bar {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100vw - 32px);
+  padding: 8px 10px;
+  border: 1px solid rgba(80, 100, 125, .2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .96);
+  color: #27313b;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .18);
+  font: 13px/1.4 system-ui, -apple-system, "PingFang SC", sans-serif;
+  backdrop-filter: blur(8px);
+}
+.dsh-floating-label { font-weight: 600; white-space: nowrap; }
+.dsh-floating-action {
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 6px;
+  background: #eef2f6;
+  color: #374454;
+  font: inherit;
+  cursor: pointer;
+}
+.dsh-floating-action:hover { background: #dfe8f1; }

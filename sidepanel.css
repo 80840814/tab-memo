@@ -26,6 +26,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .eyebrow { margin: 0 0 1px; color: var(--muted); font-size: 9px; letter-spacing: .16em; font-weight: 700; }
 h1 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
 .header-actions { display: flex; align-items: center; gap: 1px; }
+#translateButton { color: var(--accent); }
+#translateButton:hover { color: var(--accent-dark); background: var(--accent-soft); }
 .icon-button, .footer-button { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: var(--muted); border-radius: 7px; padding: 7px; }
 .icon-button:hover, .footer-button:hover { color: var(--ink); background: var(--soft); }
 .pin-button.is-pinned { color: var(--accent); background: var(--accent-soft); }
