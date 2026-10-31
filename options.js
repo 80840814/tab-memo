@@ -5,12 +5,13 @@ const PRESETS = {
   ollama: { apiBaseUrl: 'http://localhost:11434/v1', model: 'qwen2.5:7b' }
 };
 
-const $ = (id) => document.getElementById(id);
+const optionEl = (id) => document.getElementById(id);
 const COLOR_RE = /^#[0-9a-f]{6}$/i;
 let defaultCleared = true; // 未设置自定义默认颜色时，译文沿用正文颜色
 
 function setStatus(text, isError = false) {
-  const el = $('status');
+  const el = optionEl('status');
+  if (!el) return;
   el.textContent = text;
   el.className = isError ? 'err' : '';
   if (text) setTimeout(() => { if (el.textContent === text) el.textContent = ''; }, 3000);
@@ -18,11 +19,11 @@ function setStatus(text, isError = false) {
 
 function readForm() {
   return {
-    apiBaseUrl: $('apiBaseUrl').value.trim(),
-    model: $('model').value.trim(),
-    apiKey: $('apiKey').value.trim(),
-    defaultColor: defaultCleared ? '' : $('defaultColor').value,
-    autoColor: $('autoColor').checked,
+    apiBaseUrl: optionEl('apiBaseUrl')?.value.trim() || '',
+    model: optionEl('model')?.value.trim() || '',
+    apiKey: optionEl('apiKey')?.value.trim() || '',
+    defaultColor: defaultCleared ? '' : (optionEl('defaultColor')?.value || ''),
+    autoColor: optionEl('autoColor')?.checked ?? true,
     siteColors: readRules()
   };
 }
@@ -63,7 +64,8 @@ function readRules() {
 }
 
 function renderRules(siteColors) {
-  const host = $('siteRules');
+  const host = optionEl('siteRules');
+  if (!host) return;
   host.innerHTML = '';
   Object.entries(siteColors || {}).forEach(([domain, color]) => {
     host.appendChild(makeRow(domain, color));
@@ -79,30 +81,31 @@ async function load() {
     autoColor: true,
     siteColors: {}
   });
-  $('apiBaseUrl').value = data.apiBaseUrl;
-  $('model').value = data.model;
-  $('apiKey').value = data.apiKey;
+  if (!optionEl('apiBaseUrl')) return;
+  optionEl('apiBaseUrl').value = data.apiBaseUrl;
+  optionEl('model').value = data.model;
+  optionEl('apiKey').value = data.apiKey;
 
   defaultCleared = !COLOR_RE.test(data.defaultColor || '');
-  if (!defaultCleared) $('defaultColor').value = data.defaultColor;
+  if (!defaultCleared && optionEl('defaultColor')) optionEl('defaultColor').value = data.defaultColor;
   renderRules(data.siteColors);
 }
 
-$('defaultColor').addEventListener('input', () => { defaultCleared = false; });
+optionEl('defaultColor')?.addEventListener('input', () => { defaultCleared = false; });
 
-$('clearDefault').addEventListener('click', () => {
+optionEl('clearDefault')?.addEventListener('click', () => {
   defaultCleared = true;
-  $('defaultColor').value = '#4a4a4a';
+  if (optionEl('defaultColor')) optionEl('defaultColor').value = '#4a4a4a';
   setStatus('已恢复默认，记得点击保存');
 });
 
-$('addSite').addEventListener('click', () => {
+optionEl('addSite')?.addEventListener('click', () => {
   const row = makeRow();
-  $('siteRules').appendChild(row);
+  optionEl('siteRules').appendChild(row);
   row.querySelector('.rule-domain').focus();
 });
 
-$('save').addEventListener('click', async () => {
+optionEl('save')?.addEventListener('click', async () => {
   const cfg = readForm();
   if (!cfg.apiBaseUrl || !cfg.model) {
     setStatus('API 地址和模型 ID 不能为空', true);
@@ -112,9 +115,9 @@ $('save').addEventListener('click', async () => {
   setStatus('已保存');
 });
 
-$('test').addEventListener('click', async () => {
+optionEl('test')?.addEventListener('click', async () => {
   const cfg = readForm();
-  const box = $('testResult');
+  const box = optionEl('testResult');
   box.style.display = 'block';
   box.textContent = '测试中…';
   await chrome.storage.local.set(cfg);
@@ -131,8 +134,8 @@ $('test').addEventListener('click', async () => {
 document.querySelectorAll('[data-preset]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const p = PRESETS[btn.dataset.preset];
-    $('apiBaseUrl').value = p.apiBaseUrl;
-    $('model').value = p.model;
+    optionEl('apiBaseUrl').value = p.apiBaseUrl;
+    optionEl('model').value = p.model;
   });
 });
 

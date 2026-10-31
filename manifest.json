@@ -12,7 +12,9 @@
     "bookmarks",
     "activeTab",
     "scripting",
-    "contextMenus"
+    "contextMenus",
+    "alarms",
+    "notifications"
   ],
   "host_permissions": ["<all_urls>"],
   "action": {

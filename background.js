@@ -68,7 +68,16 @@ async function getPageState(tabId) {
   } catch (e) { return false; }
 }
 
+async function checkTicketAlerts() {
+  const data = await chrome.storage.local.get({ supportTickets: [], ticketSettings: { firstResponseMinutes: 60, followUpMinutes: 1440 } });
+  const now = Date.now();
+  const overdue = data.supportTickets.filter((t) => !['resolved','closed'].includes(t.status) && now - new Date(t.updatedAt).getTime() > (t.firstRespondedAt ? data.ticketSettings.followUpMinutes : data.ticketSettings.firstResponseMinutes) * 60000);
+  if (overdue.length && chrome.notifications) chrome.notifications.create('ticket-overdue', { type: 'basic', iconUrl: 'icons/icon128.png', title: '工单跟进提醒', message: `${overdue.length} 个工单已超过跟进时限，请及时处理。` });
+}
+chrome.alarms.onAlarm.addListener((alarm) => { if (alarm.name === 'ticket-alerts') checkTicketAlerts(); });
+
 chrome.runtime.onInstalled.addListener(async () => {
+  chrome.alarms.create('ticket-alerts', { periodInMinutes: 5 });
   await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
   await chrome.sidePanel.setOptions({ path: 'sidepanel.html', ...panelOptions });
   await chrome.contextMenus.removeAll();
@@ -85,6 +94,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 chrome.runtime.onStartup.addListener(() => {
+  chrome.alarms.create('ticket-alerts', { periodInMinutes: 5 });
   chrome.contextMenus.create({ id: 'translate-selection', title: '翻译选中文本', contexts: ['selection'] });
   chrome.contextMenus.create({ id: 'translate-page', title: '翻译当前网页', contexts: ['page', 'frame'] });
 });

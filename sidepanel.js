@@ -265,7 +265,7 @@ $('#translateButton').addEventListener('click', async () => {
     showToast('此页面不支持注入翻译');
   }
 });
-$('#settingsButton').addEventListener('click', () => chrome.runtime.openOptionsPage());
+$('#settingsButton').addEventListener('click', () => document.querySelector('[data-view="settings"]')?.click());
 $('#newGroupButton').addEventListener('click', createGroup);
 $('#expandAllButton').addEventListener('click', () => setAllGroupsCollapsed(false));
 $('#collapseAllButton').addEventListener('click', () => setAllGroupsCollapsed(true));

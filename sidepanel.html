@@ -29,6 +29,13 @@
         </div>
       </header>
 
+      <nav class="workspace-switch" aria-label="工作区">
+        <button class="workspace-tab active" data-view="tabs">标签管理</button>
+        <button class="workspace-tab" data-view="tickets">工单跟进 <span id="ticketBadge" class="ticket-badge"></span></button>
+        <button class="workspace-tab" data-view="settings">翻译设置</button>
+      </nav>
+
+      <section id="tabsView">
       <section class="toolbar" aria-label="标签工具">
         <label class="search-box">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
@@ -47,6 +54,31 @@
       </section>
 
       <div id="groups" class="groups" aria-live="polite"></div>
+      </section>
+
+      <section id="ticketsView" class="tickets-view" hidden>
+        <div class="ticket-toolbar">
+          <div class="ticket-toolbar-row"><input id="ticketSearch" class="ticket-search" type="search" placeholder="搜索工单、客户或内容…" /><button id="newTicketButton" class="primary-button ticket-new-button">+ 新建工单</button></div>
+          <div class="ticket-actions"><button id="dailySummaryButton" class="ticket-tool-button" title="查看今日工单汇总"><span class="tool-icon">▤</span>今日汇总</button><span class="ticket-action-divider"></span><button id="exportTickets" class="ticket-tool-button" title="导出工单数据"><span class="tool-icon">↑</span>导出</button><button id="importTickets" class="ticket-tool-button" title="导入工单数据"><span class="tool-icon">↓</span>导入</button><input id="ticketImportFile" type="file" accept="application/json" hidden /></div>
+        </div>
+        <div class="ticket-controls"><select id="ticketStatusFilter"><option value="all">所有状态</option><option value="new">待响应</option><option value="active">处理中</option><option value="waiting">等待客户</option><option value="resolved">已解决</option><option value="closed">已关闭</option></select><select id="ticketSort"><option value="updated-desc">最近更新</option><option value="updated-asc">最久未更新</option><option value="overdue">超时优先</option></select><span class="ticket-controls-spacer"></span><div class="ticket-bulk-actions"><button id="expandTickets" class="ticket-bulk-button" title="展开所有工单"><span aria-hidden="true">⌄</span>展开</button><button id="collapseTickets" class="ticket-bulk-button" title="收起所有工单"><span aria-hidden="true">⌃</span>收起</button></div></div>
+        <div class="ticket-stats" id="ticketStats"></div>
+        <div id="ticketBoard" class="ticket-board"></div>
+      </section>
+
+      <section id="settingsView" class="settings-view" hidden>
+        <div class="settings-card">
+          <h2>AI 网页翻译设置</h2><p class="settings-desc">支持 OpenAI 兼容的 Chat Completions 接口。配置保存在本地浏览器中。</p>
+          <label>快速选择服务商</label><div class="settings-presets"><button type="button" data-preset="openai">OpenAI</button><button type="button" data-preset="deepseek">DeepSeek</button><button type="button" data-preset="dashscope">通义千问</button><button type="button" data-preset="ollama">Ollama（本地）</button></div>
+          <label for="apiBaseUrl">API 地址（Base URL）</label><input type="text" id="apiBaseUrl" placeholder="https://api.openai.com/v1"><small>会自动拼接 /chat/completions</small>
+          <label for="model">模型 ID</label><input type="text" id="model" placeholder="例如 gpt-4o-mini / deepseek-chat / qwen-plus">
+          <label for="apiKey">API Key</label><input type="password" id="apiKey" placeholder="sk-..."><small>Ollama 等本地服务可填占位值。</small>
+          <div class="settings-actions"><button id="save" class="primary">保存</button><button id="test">测试连接</button><span id="status"></span></div><div id="testResult" class="test-result"></div>
+          <h3>译文颜色</h3><p class="settings-desc">默认译文与正文同色但略浅，也可设置颜色或按页面背景自动调整。</p>
+          <label for="defaultColor">所有站点的默认颜色</label><div class="settings-color"><input type="color" id="defaultColor" value="#4a4a4a"><button id="clearDefault" type="button">恢复默认</button></div>
+          <label class="settings-check"><input type="checkbox" id="autoColor" checked> 按页面背景自动调整译文颜色</label><label>按站点设置颜色</label><div id="siteRules"></div><button type="button" id="addSite">+ 添加站点</button><small>填写域名即可，例如 github.com 会匹配其子域名；更具体的域名规则优先。</small>
+        </div>
+      </section>
 
       <footer class="app-footer">
         <span class="save-status"><span class="status-dot"></span><span id="saveStatus">备注自动保存</span></span>
@@ -56,6 +88,17 @@
       </footer>
     </main>
     <div class="toast" id="toast" role="status"></div>
+    <div id="confirmOverlay" class="confirm-overlay" hidden>
+      <section class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+        <div class="confirm-icon" aria-hidden="true">!</div>
+        <h2 id="confirmTitle">删除工单？</h2>
+        <p id="confirmMessage">确定删除这条工单及其全部进展记录吗？此操作无法撤销。</p>
+        <div class="confirm-actions"><button type="button" id="cancelDelete">取消</button><button type="button" id="confirmDelete">删除工单</button></div>
+      </section>
+    </div>
+    <script src="tickets.js"></script>
     <script src="sidepanel.js"></script>
+    <script src="tickets-ui.js"></script>
+    <script src="options.js"></script>
   </body>
 </html>
